@@ -1,45 +1,75 @@
-# Shellnet
-
-![screenshot](/docs/screenshot-shellnet-login.png)
 
 ## Setup on Ubuntu 16.04+
-Install the required packages.  
-`sudo apt install git postgresql postgresql-contrib redis-server`  
-[Install golang-1.10](https://gist.github.com/ndaidong/4c0e9fbae8d3729510b1c04eb42d2a80)
 
-Don't forget to make your GOPATH export persistent.
+#### Install the required packages
 
-Install the necessary go libraries
 ```
+apt-get update
+sudo apt install -y git postgresql postgresql-contrib redis-server	
+```
+#### Install PostgreSQL
+
+Set a password for postgresql
+```
+sudo passwd postgres
+```
+
+Login and set password with postgres 
+```
+su - postgres
+psql -d template1 -c "ALTER USER postgres WITH PASSWORD 'newpassword';"
+```
+
+
+#### Install Go
+
+```
+wget https://dl.google.com/go/go1.11.4.linux-amd64.tar.gz
+tar -C /usr/local -xzf go1.11.4.linux-amd64.tar.gz
+rm go1.11.4.linux-amd64.tar.gz
+export GOPATH=$HOME/work
+export PATH=$PATH:/usr/local/go/bin
+export GOROOT=/usr/local/go
 go get github.com/gomodule/redigo/redis \
 	github.com/julienschmidt/httprouter \
 	github.com/lib/pq \
 	github.com/opencoff/go-srp
+	
 ```
 
-Clone the Shellnet repo in your ${GOPATH}/src.
+#### Install Azur Deamon
+```
+wget https://getazur.org/linux-cli.tar.gz
+tar -xvf linux-cli.tar.gz
+rm linux-cli.tar.gz
+```
 
 #### Postgres Setup
-[Configure postgres user](https://www.linode.com/docs/databases/postgresql/how-to-install-postgresql-on-ubuntu-16-04/)  
 
 Setup user database  
-`~$ cat user_db.sql | psql -U <username> -h <host>`  
+`~$ cat user_db.sql | psql -U postgres -h 127.0.0.1`  
 Setup transactions database  
-`~$ cat transaction_db.sql | psql -U <username> -h <host>`
+`~$ cat transaction_db.sql | psql -U postgres -h 127.0.0.1`
 
-#### Setup Turtlecoin service
+#### Setup Azur Deamon
+
+Create Wallet
+
+```
+cd linux-cli
+./zedwallet
+```
+
+
 Run this once.
-`~$ ./turtle-service --container-file <container name> -p <password> -g`  
-
-Start turtle-service
-`~$ ./turtle-service --rpc-password <password> --container-file <container name> -p <container password> -d`
+`~$ ./azur-service --container-file <container name> -p <password> -g`  
 
 Point turtle-service at an existing daemon like this
-`~$ ./turtle-service --rpc-password <rpc password> --container-file <container name> -p <container password> -d --daemon-address <daemon DNS or IP address> --daemon-port <daemon port>`
+`~$ ./azur-service --rpc-password <rpc password> --container-file <container name> -p <container password> --daemon-address node-1.getazur.org --daemon-port 15251`
 
-#### Start redis-server
 
-#### Configure and start run scripts
+#### Setup Web Wallet
+
 Edit these files:
 * services/main/run.sh  
 ```bash
@@ -74,19 +104,4 @@ go run users.go utils.go
 
 `~$ cd services/main ; ./run.sh & disown`  
 `~$ cd services/wallet ; ./run.sh & disown`  
-`~$ cd services/user ; ./run.sh & disown`  
-
-
-## Todo
-* Finish walletd integration
-* Make Front-end pretty
-* add documentation
-* automate tasks
-* add tests
-
-
-## Dependencies
-* Redis
-* Postgresql
-* Go
-* TurtleCoin wallet daemon
+`~$ cd services/user ; ./run.sh & disown` 
