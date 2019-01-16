@@ -62,10 +62,14 @@ cd linux-cli
 
 
 Run this once.
-`~$ ./azur-service --container-file <container name> -p <password> -g`  
+```
+./azur-service --container-file <container name> -p <password> -g
+```
 
 Point turtle-service at an existing daemon like this
-`~$ ./azur-service --rpc-password <rpc password> --container-file <container name> -p <container password> --daemon-address node-1.getazur.org --daemon-port 15251`
+```
+./azur-service --rpc-password <rpc password> --container-file <container name> -p <container password> --daemon-address node-1.getazur.org --daemon-port 15251
+```
 
 
 #### Setup Web Wallet
