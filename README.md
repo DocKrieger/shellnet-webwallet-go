@@ -47,9 +47,10 @@ rm linux-cli.tar.gz
 #### Postgres Setup
 
 Setup user database  
-`~$ cat user_db.sql | psql -U postgres -h 127.0.0.1`  
-Setup transactions database  
-`~$ cat transaction_db.sql | psql -U postgres -h 127.0.0.1`
+```
+cat user_db.sql | psql -U postgres -h 127.0.0.1
+cat transaction_db.sql | psql -U postgres -h 127.0.0.1
+```
 
 #### Setup Azur Deamon
 
