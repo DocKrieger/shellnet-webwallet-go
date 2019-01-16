@@ -44,14 +44,6 @@ tar -xvf linux-cli.tar.gz
 rm linux-cli.tar.gz
 ```
 
-#### Postgres Setup
-
-Setup user database  
-```
-cat user_db.sql | psql -U postgres -h 127.0.0.1
-cat transaction_db.sql | psql -U postgres -h 127.0.0.1
-```
-
 #### Setup Azur Deamon
 
 Create Wallet
@@ -72,6 +64,14 @@ Point turtle-service at an existing daemon like this
 ./azur-service --rpc-password <rpc password> --container-file <container name> -p <container password> --daemon-address node-1.getazur.org --daemon-port 15251
 ```
 
+
+#### Postgres Setup
+
+```
+gitclone --recursive https://github.com/getazur/shellnet-webwallet-go.git
+cat user_db.sql | psql -U postgres -h 127.0.0.1
+cat transaction_db.sql | psql -U postgres -h 127.0.0.1
+```
 
 #### Setup Web Wallet
 
